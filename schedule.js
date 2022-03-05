@@ -51,63 +51,79 @@ let lessons_list = [
     "Bài 30."
 ];
 
-
-function get_start_date(){
-    const NGAY_KHAI_GIANG = document.getElementById("start").value;
-    return NGAY_KHAI_GIANG;
-}
-
-//let current =  new Date(NGAY_KHAI_GIANG);
-
-const LEARNING_DAY = [TUE, THU, SAT];
-const get_date_string = (date) =>date.toISOString().substring(0,10);
-const get_next_date = (date) =>date.getDate() + 1;
-let current = new Date(get_start_date());
-
-// const get_schedule = lesson => {
-//     let day = -1, not_learning_day = true, is_day_off = true, date_string="";
-    const get_schedule = lesson => {
-        let day = -1, not_learning_day = true, is_day_off = true, date_string = "";
-    
-        while (not_learning_day || is_day_off) {
-            current.setDate(get_next_date(current));
-            date_string = get_date_string(current);
-            day = current.getDay();
-            not_learning_day = !LEARNING_DAYS.includes(day);
-            is_day_off = HOLIDAY_LIST.includes(date_string) || DAY_OFF_LIST.includes(date_string);
-        }
-        return {
-            day: DAY_STR[day],
-            lesson,
-            date: get_date_string(current)
-        };
-    };
-    
-    let learning_schedule = [
-        {
-            day: DAY_STR[current.getDay()],
-            lesson: lessons_list[0],
-            date: get_date_string(current)
-        },
-        ...lessons_list.slice(1).map(get_schedule)
-    ];
+//lay ngay user nhap
+// function get_start_date(){
+//     let INPUT = document.getElementById("start").value.toString();
+//     return INPUT;
+// }
 
 
-function makeScheduleTable(learning_schedule) {
-    var result_table = "<table border=1>";
-    for(var i=0; i<learning_schedule.length; i++) {
-        result_table += "<tr>";
-        for(var j=0; j<learning_schedule[i].length; j++){
-            result_table += "<td>"+learning_schedule[i][j]+"</td>";
-        }
-        result_table += "</tr>";
+// const NGAY_KHAI_GIANG = get_start_date();
+
+
+
+const NGAY_KHAI_GIANG = "2022-02-26";
+let current = new Date(NGAY_KHAI_GIANG);
+
+const LEARNING_DAYS = [TUE, THU, SAT];
+const get_date_string = (date) => date.toISOString().substring(0, 10);
+const get_next_date = (date) => date.getDate() + 1;
+
+const get_schedule = lesson => {
+    let day = -1, not_learning_day = true, is_day_off = true, date_string = "";
+
+    while (not_learning_day || is_day_off) {
+        current.setDate(get_next_date(current));
+        date_string = get_date_string(current);
+        day = current.getDay();
+        not_learning_day = !LEARNING_DAYS.includes(day);
+        is_day_off = HOLIDAY_LIST.includes(date_string) || DAY_OFF_LIST.includes(date_string);
     }
-    result_table += "</table>";
-
-    return result_table;
+    return {
+        day: DAY_STR[day],
+        lesson,
+        date: get_date_string(current)
+    };
 };
 
-function displaySchedule(){
-    makeScheduleTable(learning_schedule);
+let learning_schedule = [
+    {
+        day: DAY_STR[current.getDay()],
+        lesson: lessons_list[0],
+        date: get_date_string(current)
+    },
+    ...lessons_list.slice(1).map(get_schedule)
+];
+
+function makeScheduleTable() {
+    
+   let result="";
+    for(var i=0; i<learning_schedule.length; i++) {
+        
+        // template string
+        result += `<tr>
+            <td>
+                ${learning_schedule[i].day}
+            </td>
+            <td>
+                ${learning_schedule[i].date}
+            </td>
+            <td>
+                ${learning_schedule[i].lesson}
+            </td>
+        </tr>
+        `;
+        // result +="<tr>"+"<td>" + learning_schedule[i].day.toString() + "</td>" + "<td>" + learning_schedule[i].lesson.toString() + "</td>" + "<td>" + learning_schedule[i].date.toString() +
+        //         "</td>";   
+
+    }
+    console.log(result);
+    document.getElementById("result").innerHTML = result;
 };
+
+// function displaySchedule(){
+//     // get_start_date();
+//     makeScheduleTable(learning_schedule);
+// };
+
 

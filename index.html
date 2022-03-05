@@ -7,16 +7,14 @@
     </head>
 
     <body>
-        <input type="text" id="start" class="start1" placeholder="Enter the start date" />
+        <input type="text" id="start" placeholder="Enter the start date" />
 
-        <button type="button" id="btnStart"  onclick="get_start_date()" >Enter</button>
+        <button type="button" onclick="get_start_date()">Okay</button>
 
-        <button type="button" onclick="displaySchedule()">Display your schedule</button>
+        <button type="button" onclick="makeScheduleTable()">Display your schedule</button>
         
-        <!-- <div id="result">
-            {}
-        </div> -->
-
+        <table id="result" border="1"></table>
+        
         <script src="schedule.js"></script>
 
     </body>
